@@ -75,3 +75,11 @@ col1.image(os.path.join('LogoSetiAio.jpg'), caption='', width=100, use_column_wi
 
 # Título
 col2.markdown("<h1 class='titulo'>Proceso Insignias Estandares Desarrollo </h1>", unsafe_allow_html=True)
+
+# Barra lateral (sidebar)
+# Cargar la imagen en el sidebar y alinearla a la derecha
+st.sidebar.image("descargar.jfif", caption='Insignias', width=100, use_column_width=True)
+
+# Opciones de proyectos y selección en el sidebar
+st.sidebar.markdown("</div>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
