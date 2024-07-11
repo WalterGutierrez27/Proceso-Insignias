@@ -149,7 +149,7 @@ if selected_project == 'CP4D':
                 )
                 try:
                     cp4d.main(ruta)
-                    ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
+                    ruta_salida = os.path.join("Downloads", "Reporte_Insignias_CP4D.csv")
 
                     # Verificar si el archivo de salida existe antes de intentar abrirlo
                     if os.path.exists(ruta_salida):
@@ -251,3 +251,55 @@ else:
         """,
         unsafe_allow_html=True
     )
+
+    # Botón para procesar el archivo
+    if st.button("Procesar archivo"):
+        if uploaded_file is not None:
+            try:
+                contenido_archivo = [line.decode('latin-1').strip() for line in uploaded_file]
+                ruta_salida = os.path.join("Downloads", f"Reporte_Insignias_{selected_project}.csv")
+                procesador.main(contenido_archivo, selected_project, ruta_salida)
+                st.markdown(
+                    """
+                    <div style="background-color: #000000; color: white; padding: 10px; border-radius: 15px;">
+                        El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!
+                    </div>
+                    <br>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                # Leer el contenido del archivo de salida
+                with open(ruta_salida, 'r', encoding='latin-1') as file:
+                    lines = file.readlines()
+
+                # Mostrar el resultado en la parte gráfica
+                if len(lines) >= 2:
+                    penultima_linea = lines[-1].strip()
+                    st.markdown(
+                        f"""
+                        <div style="background-color: #000000; color: white; padding: 10px; border-radius: 15px;">
+                            El porcentaje de cumplimiento del {selected_project} es: {penultima_linea}
+                        </div>
+                        <br>
+                        """,
+                        unsafe_allow_html=True
+                    )
+                else:
+                    st.warning("El archivo no tiene resultados por mostrar")
+
+                with open(ruta_salida, 'rb') as file:
+                    file_data = file.read()
+
+                # Botón para descargar el archivo de salida
+                st.download_button(
+                    label="Descargar reporte",
+                    data=file_data,
+                    file_name=f"Reporte_Insignias_{selected_project}.csv",
+                    mime="text/csv"
+                )
+
+            except UnicodeDecodeError:
+                st.error("Error al decodificar el archivo.")
+        else:
+            st.error("Por favor, sube un archivo y selecciona un proyecto.")
