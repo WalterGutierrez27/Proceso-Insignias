@@ -149,7 +149,7 @@ if selected_project == 'CP4D':
                 )
                 try:
                     cp4d.main(ruta)
-                    ruta_salida = os.path.join("Downloads", "Reporte_Insignias_CP4D.csv")
+                    ruta_salida = os.path.join("Descargas", "Reporte_Insignias_CP4D.csv")
 
                     # Verificar si el archivo de salida existe antes de intentar abrirlo
                     if os.path.exists(ruta_salida):
@@ -257,7 +257,7 @@ else:
         if uploaded_file is not None:
             try:
                 contenido_archivo = [line.decode('latin-1').strip() for line in uploaded_file]
-                ruta_salida = os.path.join("Downloads", f"Reporte_Insignias_{selected_project}.csv")
+                ruta_salida = os.path.join("Descargas", f"Reporte_Insignias_{selected_project}.csv")
                 procesador.main(contenido_archivo, selected_project, ruta_salida)
                 st.markdown(
                     """
