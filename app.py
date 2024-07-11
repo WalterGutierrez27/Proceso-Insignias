@@ -11,13 +11,13 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-color: #FFFFFF; /* Fondo blanco */
+        background-color: #fffff; 
     }
     .main {
         background-color: #FFFFFF;
         padding: 20px;
-        border-left: 10px solid #000000; /* Barra negra izquierda */
-        border-right: 10px solid #000000; /* Barra negra derecha */
+        border-left: 10px solid #000000; 
+        border-right: 10px solid #000000; 
     }
     </style>
     """,
@@ -38,7 +38,7 @@ st.markdown(
     }
     [data-testid="stSidebar"] {
         background-color: rgb(0, 0, 0); /* Color de fondo original */
-        color: #FFFFFF; /* Color de letras original (blanco) */
+        color: #000000; /* Color de letras original (blanco) */
     }
     [aria-selected="true"] {
         color: black; /* Letras negras */
@@ -70,20 +70,18 @@ st.markdown(estilo_imagen, unsafe_allow_html=True)
 col1, col2 = st.columns([1, 2])
 
 # Imagen
-#col1.image(os.path.join(ruta_base, "OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Imagenes/LogoSetiAio.jpg"), caption='', width=100, use_column_width=True)
-col1.image(os.path.join('LogoSetiAio.jpg'), caption='', width=100, use_column_width=True)
+col1.image(os.path.join(ruta_base, "OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Imagenes/LogoSetiAio.jpg"), caption='', width=100, use_column_width=True)
 
 # Título
 col2.markdown("<h1 class='titulo'>Proceso Insignias Estandares Desarrollo </h1>", unsafe_allow_html=True)
 
 # Barra lateral (sidebar)
 # Cargar la imagen en el sidebar y alinearla a la derecha
-st.sidebar.image("descargar.jfif", caption='Insignias', width=100, use_column_width=True)
+st.sidebar.image("C:/Users/waltergutierrez/Downloads/estandarizacion-main/estandarizacion-main/descargar.jfif", caption='Insignias', width=100, use_column_width=True)
 
 # Opciones de proyectos y selección en el sidebar
 st.sidebar.markdown("</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
-
 
 # Crear una instancia del procesador
 procesador = Procesador()
@@ -128,28 +126,20 @@ if selected_project == 'CP4D':
             border-radius: 12px;
         }
         .stSuccess, .stError, .stWarning, .stInfo {
-            color: #000000; /* Cambia esto por el color que prefieras */
+            color: #000000 
         }
         </style>
         """,
         unsafe_allow_html=True
     )
 
-    if st.button("Procesar archivo"):
+    if st.button("Procesar"):
         if ruta:
             if os.path.exists(ruta) and os.path.isdir(ruta):
-                st.markdown(
-                    """
-                    <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
-                        El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!
-                    </div>
-                    <br>
-                    """,
-                    unsafe_allow_html=True
-                )
+                st.success("El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!")
                 try:
                     cp4d.main(ruta)
-                    ruta_salida = os.path.join("Descargas", "Reporte_Insignias_CP4D.csv")
+                    ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
 
                     # Verificar si el archivo de salida existe antes de intentar abrirlo
                     if os.path.exists(ruta_salida):
@@ -160,15 +150,7 @@ if selected_project == 'CP4D':
                         # Mostrar la penúltima línea del archivo
                         if len(lines) >= 2:
                             penultima_linea = lines[-1].strip()
-                            st.markdown(
-                                f"""
-                                <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
-                                    El porcentaje de cumplimiento del proyecto {selected_project} es: {penultima_linea}
-                                </div>
-                                <br>
-                                """,
-                                unsafe_allow_html=True
-                            )
+                            st.markdown(f"<div class='stInfo'>El porcentaje de cumplimiento del proyecto {selected_project} es: {penultima_linea}</div><br>", unsafe_allow_html=True)
                         else:
                             st.warning("El archivo no tiene suficientes líneas para mostrar la penúltima línea.")
 
@@ -187,6 +169,8 @@ if selected_project == 'CP4D':
 
                 except PermissionError:
                     st.error("Permiso denegado para acceder a esta ruta.")
+                except FileNotFoundError as fnf_error:
+                    st.error(f"Error: {fnf_error}")
                 except Exception as e:
                     st.error(f"Error al listar la ruta: {e}")
             else:
@@ -257,17 +241,9 @@ else:
         if uploaded_file is not None:
             try:
                 contenido_archivo = [line.decode('latin-1').strip() for line in uploaded_file]
-                ruta_salida = os.path.join("Descargas", f"Reporte_Insignias_{selected_project}.csv")
+                ruta_salida = os.path.join(ruta_base, "Downloads", f"Reporte_Insignias_{selected_project}.csv")
                 procesador.main(contenido_archivo, selected_project, ruta_salida)
-                st.markdown(
-                    """
-                    <div style="background-color: #000000; color: white; padding: 10px; border-radius: 15px;">
-                        El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!
-                    </div>
-                    <br>
-                    """,
-                    unsafe_allow_html=True
-                )
+                st.success("El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!")
 
                 # Leer el contenido del archivo de salida
                 with open(ruta_salida, 'r', encoding='latin-1') as file:
@@ -276,15 +252,7 @@ else:
                 # Mostrar el resultado en la parte gráfica
                 if len(lines) >= 2:
                     penultima_linea = lines[-1].strip()
-                    st.markdown(
-                        f"""
-                        <div style="background-color: #000000; color: white; padding: 10px; border-radius: 15px;">
-                            El porcentaje de cumplimiento del {selected_project} es: {penultima_linea}
-                        </div>
-                        <br>
-                        """,
-                        unsafe_allow_html=True
-                    )
+                    st.info(f"El porcentaje de cumplimiento del {selected_project} es: {penultima_linea}")
                 else:
                     st.warning("El archivo no tiene resultados por mostrar")
 
@@ -298,8 +266,9 @@ else:
                     file_name=f"Reporte_Insignias_{selected_project}.csv",
                     mime="text/csv"
                 )
-
-            except UnicodeDecodeError:
-                st.error("Error al decodificar el archivo.")
+            except FileNotFoundError as fnf_error:
+                st.error(f"Error: {fnf_error}")
+            except Exception as e:
+                st.error(f"Error al procesar el archivo: {e}")
         else:
-            st.error("Por favor, sube un archivo y selecciona un proyecto.")
+            st.warning("Por favor, selecciona un archivo.")
