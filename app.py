@@ -75,9 +75,3 @@ col1.image(os.path.join(LogoSetiAio.jpg), caption='', width=100, use_column_widt
 
 # Título
 col2.markdown("<h1 class='titulo'>Proceso Insignias Estandares Desarrollo </h1>", unsafe_allow_html=True)
-
-
-            except UnicodeDecodeError:
-                st.error("Error al decodificar el archivo.")
-        else:
-            st.error("Por favor, sube un archivo y selecciona un proyecto.")
