@@ -83,3 +83,171 @@ st.sidebar.image("descargar.jfif", caption='Insignias', width=100, use_column_wi
 # Opciones de proyectos y selección en el sidebar
 st.sidebar.markdown("</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
+
+
+# Crear una instancia del procesador
+procesador = Procesador()
+
+with st.sidebar:
+    project_options = ['proyecto_bogota', 'proyecto_popular', 'CP4D']
+    selected_project = st.selectbox("Selecciona un proyecto", project_options)
+
+if selected_project == 'CP4D':
+    with st.sidebar:
+        ruta = st.text_input("Introduce la ruta del folder a procesar")
+
+    # Estilo personalizado para botones
+    st.markdown(
+        """
+        <style>
+        div.stButton > button {
+            background-color: #000000;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+
+        div.stDownloadButton > button {
+            background-color: #000000;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+        .stSuccess, .stError, .stWarning, .stInfo {
+            color: #000000; /* Cambia esto por el color que prefieras */
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    if st.button("Procesar archivo"):
+        if ruta:
+            if os.path.exists(ruta) and os.path.isdir(ruta):
+                st.markdown(
+                    """
+                    <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
+                        El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!
+                    </div>
+                    <br>
+                    """,
+                    unsafe_allow_html=True
+                )
+                try:
+                    cp4d.main(ruta)
+                    ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
+
+                    # Verificar si el archivo de salida existe antes de intentar abrirlo
+                    if os.path.exists(ruta_salida):
+                        # Leer el contenido del archivo de salida
+                        with open(ruta_salida, 'r', encoding='latin-1') as file:
+                            lines = file.readlines()
+
+                        # Mostrar la penúltima línea del archivo
+                        if len(lines) >= 2:
+                            penultima_linea = lines[-1].strip()
+                            st.markdown(
+                                f"""
+                                <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
+                                    El porcentaje de cumplimiento del proyecto {selected_project} es: {penultima_linea}
+                                </div>
+                                <br>
+                                """,
+                                unsafe_allow_html=True
+                            )
+                        else:
+                            st.warning("El archivo no tiene suficientes líneas para mostrar la penúltima línea.")
+
+                        with open(ruta_salida, 'rb') as file:
+                            file_data = file.read()
+
+                        # Botón para descargar el archivo de salida
+                        st.download_button(
+                            label="Descargar reporte",
+                            data=file_data,
+                            file_name="Reporte_Insignias_CP4D.csv",
+                            mime="text/csv"
+                        )
+                    else:
+                        st.error(f"No se encontró el archivo en la ruta especificada: {ruta_salida}")
+
+                except PermissionError:
+                    st.error("Permiso denegado para acceder a esta ruta.")
+                except Exception as e:
+                    st.error(f"Error al listar la ruta: {e}")
+            else:
+                st.error("La ruta introducida no existe o no es un directorio.")
+        else:
+            st.warning("Por favor, introduce una ruta.")
+else:
+    # Cambiar el contenido del panel de carga de archivos con JavaScript y CSS
+    custom_css = """
+    <style>
+        .stFileUploader label div:first-child {
+            font-size: 1rem;
+            color: #F1C40F;
+        }
+        .stFileUploader label div:first-child:before {
+            content: 'Arrastra y suelta tu archivo aquí o haz clic para buscar';
+            display: block;
+        }
+        .stFileUploader label div:first-child span {
+            display: none;
+        }
+    </style>
+    """
+    st.markdown(custom_css, unsafe_allow_html=True)
+
+    # Cargar archivo .dsx
+    with st.sidebar:
+        uploaded_file = st.file_uploader("Selecciona un archivo .dsx para procesar", type="dsx")
+
+    # Estilo personalizado para botones
+    st.markdown(
+        """
+        <style>
+        div.stButton > button {
+            background-color: #000000;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+
+        div.stDownloadButton > button {
+            background-color: #000000;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
