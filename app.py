@@ -70,14 +70,14 @@ st.markdown(estilo_imagen, unsafe_allow_html=True)
 col1, col2 = st.columns([1, 2])
 
 # Imagen
-col1.image(os.path.join("LogoSetiAio.jpg"), caption='', width=100, use_column_width=True)
+col1.image(os.path.join(ruta_base_descargas, "LogoSetiAio.jpg"), caption='', width=100, use_column_width=True)
 
 # Título
 col2.markdown("<h1 class='titulo'>Proceso Insignias Estandares Desarrollo </h1>", unsafe_allow_html=True)
 
 # Barra lateral (sidebar)
 # Cargar la imagen en el sidebar y alinearla a la derecha
-st.sidebar.image(os.path.join("descargar.jfif"), caption='Insignias', width=100, use_column_width=True)
+st.sidebar.image(os.path.join(ruta_base_descargas, "descargar.jfif"), caption='Insignias', width=100, use_column_width=True)
 
 # Opciones de proyectos y selección en el sidebar
 st.sidebar.markdown("</div>", unsafe_allow_html=True)
@@ -148,6 +148,7 @@ if selected_project == 'CP4D':
                 try:
                     cp4d.main(ruta)
                     ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
+                    os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
 
                     # Verificar si el archivo de salida existe antes de intentar abrirlo
                     if os.path.exists(ruta_salida):
@@ -256,6 +257,8 @@ else:
             try:
                 contenido_archivo = [line.decode('latin-1').strip() for line in uploaded_file]
                 ruta_salida = os.path.join(ruta_base_descargas, f"Reporte_Insignias_{selected_project}.csv")
+                os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
+                
                 procesador.main(contenido_archivo, selected_project, ruta_salida)
                 st.markdown(
                     """
