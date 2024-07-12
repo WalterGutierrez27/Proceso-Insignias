@@ -92,7 +92,8 @@ with st.sidebar:
 
 if selected_project == 'CP4D':
     with st.sidebar:
-        ruta = st.text_input("Introduce la ruta del folder a procesar")
+        #ruta = st.text_input("Introduce la ruta del folder a procesar")
+        ruta = "C:/Users/waltergutierrez/Downloads/export_2024-06-04_18-00-28"
 
     # Estilo personalizado para botones
     st.markdown(
