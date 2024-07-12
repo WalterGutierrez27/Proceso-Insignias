@@ -158,7 +158,7 @@ if selected_project == 'CP4D':
 
                         # Mostrar la penúltima línea del archivo
                         if len(lines) >= 2:
-                            penultima_linea = lines[-1].strip()
+                            penultima_linea = lines[-2].strip()  # Cambiado a la penúltima línea correctamente
                             st.markdown(
                                 f"""
                                 <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
@@ -276,7 +276,7 @@ else:
 
                 # Mostrar el resultado en la parte gráfica
                 if len(lines) >= 2:
-                    penultima_linea = lines[-1].strip()
+                    penultima_linea = lines[-2].strip()  # Cambiado a la penúltima línea correctamente
                     st.markdown(
                         f"""
                         <div style="background-color: #000000; color: white; padding: 10px; border-radius: 15px;">
