@@ -135,7 +135,7 @@ if selected_project == 'CP4D':
 
     if st.button("Procesar archivo"):
         if ruta:
-           st.markdown(
+            st.markdown(
                 """
                 <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
                     El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!
