@@ -135,55 +135,58 @@ if selected_project == 'CP4D':
 
     if st.button("Procesar archivo"):
         if ruta:
-            st.markdown(
-                """
-                <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
-                    El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!
-                </div>
-                <br>
-                """,
-               unsafe_allow_html=True
-            )
-            try:
-                cp4d.main(ruta)
-                ruta_salida = os.path.join(ruta, "Reporte_Insignias_CP4D.csv")
-                #ruta_salida = os.path.join(ruta_base_descargas, f"Reporte_Insignias_{selected_project}.csv")
-                os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
-    
-                if os.path.exists(ruta_salida):
-                    with open(ruta_salida, 'r', encoding='latin-1') as file:
-                        lines = file.readlines()
-    
-                    if len(lines) >= 2:
-                        penultima_linea = lines[-2].strip()
-                        st.markdown(
-                            f"""
-                            <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
-                                El porcentaje de cumplimiento del proyecto {selected_project} es: {penultima_linea}
-                            </div>
-                            <br>
-                            """,
-                            unsafe_allow_html=True
+            ruta = ruta.strip()  # Eliminar espacios en blanco
+            if os.path.exists(ruta) and os.path.isdir(ruta):
+                st.markdown(
+                    """
+                    <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
+                        El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!
+                    </div>
+                    <br>
+                    """,
+                    unsafe_allow_html=True
+                )
+                try:
+                    cp4d.main(ruta)
+                    ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
+                    os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
+
+                    if os.path.exists(ruta_salida):
+                        with open(ruta_salida, 'r', encoding='latin-1') as file:
+                            lines = file.readlines()
+
+                        if len(lines) >= 2:
+                            penultima_linea = lines[-2].strip()
+                            st.markdown(
+                                f"""
+                                <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
+                                    El porcentaje de cumplimiento del proyecto {selected_project} es: {penultima_linea}
+                                </div>
+                                <br>
+                                """,
+                                unsafe_allow_html=True
+                            )
+                        else:
+                            st.warning("El archivo no tiene suficientes líneas para mostrar la penúltima línea.")
+
+                        with open(ruta_salida, 'rb') as file:
+                            file_data = file.read()
+
+                        st.download_button(
+                            label="Descargar reporte",
+                            data=file_data,
+                            file_name="Reporte_Insignias_CP4D.csv",
+                            mime="text/csv"
                         )
                     else:
-                        st.warning("El archivo no tiene suficientes líneas para mostrar la penúltima línea.")
-    
-                    with open(ruta_salida, 'rb') as file:
-                        file_data = file.read()
-    
-                    st.download_button(
-                        label="Descargar reporte",
-                        data=file_data,
-                        file_name="Reporte_Insignias_CP4D.csv",
-                        mime="text/csv"
-                    )
-                else:
-                    st.error(f"No se encontró el archivo en la ruta especificada: {ruta_salida}")
-    
-            except PermissionError:
-                st.error("Permiso denegado para acceder a esta ruta.")
-            except Exception as e:
+                        st.error(f"No se encontró el archivo en la ruta especificada: {ruta_salida}")
+
+                except PermissionError:
+                    st.error("Permiso denegado para acceder a esta ruta.")
+                except Exception as e:
                     st.error(f"Error al listar la ruta: {e}")
+            else:
+                st.error("La ruta introducida no existe o no es un directorio.")
         else:
             st.warning("Por favor, introduce una ruta.")
 else:
