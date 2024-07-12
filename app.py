@@ -135,13 +135,7 @@ if selected_project == 'CP4D':
 
     if st.button("Procesar archivo"):
         if ruta:
-            ruta = ruta.strip()  # Eliminar espacios en blanco
-            st.write(f"Ruta introducida: {ruta}")  # Depuración
-            st.write(f"Ruta existe: {os.path.exists(ruta)}")  # Depuración
-            st.write(f"Es un directorio: {os.path.isdir(ruta)}")  # Depuración
-
-            #if os.path.exists(ruta) and os.path.isdir(ruta):
-            st.markdown(
+           st.markdown(
                 """
                 <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
                     El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!
