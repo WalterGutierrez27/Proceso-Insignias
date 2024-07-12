@@ -127,7 +127,7 @@ def main(ruta):
     file_json = "DataStage-README.json"
     etiqueta = 'assets'  
     #ruta_salida = f"{ruta}\salida\Reporte_Insignias_CP4D.csv"
-    ruta_salida = f"{ruta}\\Reporte_Insignias_CP4D.csv"
+    ruta_salida = f"{ruta}\Reporte_Insignias_CP4D.csv"
     #ruta_salida = f"{ruta}"
 
     jobs = []
