@@ -136,6 +136,10 @@ if selected_project == 'CP4D':
     if st.button("Procesar archivo"):
         if ruta:
             ruta = ruta.strip()  # Eliminar espacios en blanco
+            st.write(f"Ruta introducida: {ruta}")  # Depuración
+            st.write(f"Ruta existe: {os.path.exists(ruta)}")  # Depuración
+            st.write(f"Es un directorio: {os.path.isdir(ruta)}")  # Depuración
+
             if os.path.exists(ruta) and os.path.isdir(ruta):
                 st.markdown(
                     """
