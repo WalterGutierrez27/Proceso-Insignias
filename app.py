@@ -92,8 +92,7 @@ with st.sidebar:
 
 if selected_project == 'CP4D':
     with st.sidebar:
-        #ruta = st.text_input("Introduce la ruta del folder a procesar")
-        ruta = "C:/Users/waltergutierrez/Downloads/export_2024-06-04_18-00-28"
+        ruta = st.text_input("Introduce la ruta del folder a procesar")
 
     # Estilo personalizado para botones
     st.markdown(
@@ -151,15 +150,12 @@ if selected_project == 'CP4D':
                     ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
                     os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
 
-                    # Verificar si el archivo de salida existe antes de intentar abrirlo
                     if os.path.exists(ruta_salida):
-                        # Leer el contenido del archivo de salida
                         with open(ruta_salida, 'r', encoding='latin-1') as file:
                             lines = file.readlines()
 
-                        # Mostrar la penúltima línea del archivo
                         if len(lines) >= 2:
-                            penultima_linea = lines[-2].strip()  # Cambiado a la penúltima línea correctamente
+                            penultima_linea = lines[-2].strip()
                             st.markdown(
                                 f"""
                                 <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
@@ -175,7 +171,6 @@ if selected_project == 'CP4D':
                         with open(ruta_salida, 'rb') as file:
                             file_data = file.read()
 
-                        # Botón para descargar el archivo de salida
                         st.download_button(
                             label="Descargar reporte",
                             data=file_data,
@@ -194,7 +189,6 @@ if selected_project == 'CP4D':
         else:
             st.warning("Por favor, introduce una ruta.")
 else:
-    # Cambiar el contenido del panel de carga de archivos con JavaScript y CSS
     custom_css = """
     <style>
         .stFileUploader label div:first-child {
@@ -212,11 +206,9 @@ else:
     """
     st.markdown(custom_css, unsafe_allow_html=True)
 
-    # Cargar archivo .dsx
     with st.sidebar:
         uploaded_file = st.file_uploader("Selecciona un archivo .dsx para procesar", type="dsx")
 
-    # Estilo personalizado para botones
     st.markdown(
         """
         <style>
@@ -252,7 +244,6 @@ else:
         unsafe_allow_html=True
     )
 
-    # Botón para procesar el archivo
     if st.button("Procesar archivo"):
         if uploaded_file is not None:
             try:
@@ -271,13 +262,11 @@ else:
                     unsafe_allow_html=True
                 )
 
-                # Leer el contenido del archivo de salida
                 with open(ruta_salida, 'r', encoding='latin-1') as file:
                     lines = file.readlines()
 
-                # Mostrar el resultado en la parte gráfica
                 if len(lines) >= 2:
-                    penultima_linea = lines[-2].strip()  # Cambiado a la penúltima línea correctamente
+                    penultima_linea = lines[-2].strip()
                     st.markdown(
                         f"""
                         <div style="background-color: #000000; color: white; padding: 10px; border-radius: 15px;">
@@ -293,7 +282,6 @@ else:
                 with open(ruta_salida, 'rb') as file:
                     file_data = file.read()
 
-                # Botón para descargar el archivo de salida
                 st.download_button(
                     label="Descargar reporte",
                     data=file_data,
