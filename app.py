@@ -136,7 +136,9 @@ if selected_project == 'CP4D':
     if st.button("Procesar archivo"):
         if ruta:
             ruta = ruta.strip()  # Eliminar espacios en blanco
+            st.write(ruta_salida)
             if os.path.exists(ruta) and os.path.isdir(ruta):
+                st.write(ruta_salida)
                 st.markdown(
                     """
                     <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
