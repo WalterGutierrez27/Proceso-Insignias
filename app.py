@@ -148,9 +148,9 @@ if selected_project == 'CP4D':
                 )
                 try:
                     cp4d.main(ruta)
-                    st.write("Pase por aqui")
                     #ruta_salida = os.path.join(ruta, "Reporte_Insignias_CP4D.csv")
                     ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
+                    st.write(ruta_salida)
                     os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
 
                     if os.path.exists(ruta_salida):
