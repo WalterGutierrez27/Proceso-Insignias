@@ -152,6 +152,7 @@ if selected_project == 'CP4D':
                     subcarpeta = "salida"
                     nombrearchivo = "Reporte_Insignias_CP4D.csv"
                     ruta_salida = os.path.join(ruta, subcarpeta, nombrearchivo)
+                    ruta_salida = os.path.join(ruta, f"Reporte_Insignias_{selected_project}.csv")
                     st.write(ruta_salida)
                     os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
 
