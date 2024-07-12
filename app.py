@@ -70,7 +70,7 @@ st.markdown(estilo_imagen, unsafe_allow_html=True)
 col1, col2 = st.columns([1, 2])
 
 # Imagen
-col1.image(os.path.join(LogoSetiAio.jpg"), caption='', width=100, use_column_width=True)
+col1.image(os.path.join("LogoSetiAio.jpg"), caption='', width=100, use_column_width=True)
 
 # Título
 col2.markdown("<h1 class='titulo'>Proceso Insignias Estandares Desarrollo </h1>", unsafe_allow_html=True)
