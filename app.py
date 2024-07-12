@@ -140,16 +140,16 @@ if selected_project == 'CP4D':
             st.write(f"Ruta existe: {os.path.exists(ruta)}")  # Depuración
             st.write(f"Es un directorio: {os.path.isdir(ruta)}")  # Depuración
 
-            if os.path.exists(ruta) and os.path.isdir(ruta):
-                st.markdown(
-                    """
-                    <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
-                        El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!
-                    </div>
-                    <br>
-                    """,
-                    unsafe_allow_html=True
-                )
+            #if os.path.exists(ruta) and os.path.isdir(ruta):
+            #    st.markdown(
+            #        """
+            #        <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
+            #            El reporte se generó satisfactoriamente, si deseas mayor detalle, ¡pulsa el botón descargar!
+            #        </div>
+            #        <br>
+            #        """,
+             #       unsafe_allow_html=True
+              #  )
                 try:
                     cp4d.main(ruta)
                     ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
