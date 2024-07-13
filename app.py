@@ -156,10 +156,10 @@ if selected_project == 'CP4D':
                     
                     #os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
 
-                    if os.path.exists(ruta_salida):
+                    if not os.path.exists(ruta_salida):
                         with open(ruta_salida, 'r', encoding='latin-1') as file:
                             lines = file.readlines()
-                            #st.write(ruta_salida)
+                            
 
                         if len(lines) >= 2:
                             penultima_linea = lines[-1].strip()
