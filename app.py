@@ -154,7 +154,7 @@ if selected_project == 'CP4D':
                     ruta_salida = ruta+"\\"+subcarpeta+"\\"+nombrearchivo
                     #ruta_salida = os.path.join(ruta, f"Reporte_Insignias_{selected_project}.csv")
                     st.write(ruta_salida)
-                    os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
+                    #os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
 
                     if os.path.exists(ruta_salida):
                         with open(ruta_salida, 'r', encoding='latin-1') as file:
