@@ -151,7 +151,7 @@ if selected_project == 'CP4D':
 
                     # Verificar si el archivo de salida existe antes de intentar abrirlo
                     #if os.path.exists(ruta_salida):
-                    if (ruta_salida):
+                    if ruta_salida !="":
                         # Leer el contenido del archivo de salida
                         with open(ruta_salida, 'r', encoding='latin-1') as file:
                             lines = file.readlines()
