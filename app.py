@@ -159,7 +159,7 @@ if selected_project == 'CP4D':
                     if os.path.exists(ruta_salida):
                         with open(ruta_salida, 'r', encoding='latin-1') as file:
                             lines = file.readlines()
-                            st.write(ruta_salida)
+                            #st.write(ruta_salida)
 
                         if len(lines) >= 2:
                             penultima_linea = lines[-1].strip()
