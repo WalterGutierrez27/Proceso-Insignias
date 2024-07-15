@@ -147,7 +147,7 @@ if selected_project == 'CP4D':
             try:
                 cp4d.main(ruta)
                 nombrearchivo = "Reporte_Insignias_CP4D.csv"
-                ruta_salida = ruta+"\\"+nombrearchivo)
+                ruta_salida = ruta+"\\"+nombrearchivo
                 #ruta_salida = os.path.normpath(os.path.join(ruta, nombrearchivo))
                 
                 if os.path.exists(ruta_salida):
