@@ -1,4 +1,3 @@
-import streamlit as st
 import json
 import os
 import zipfile
@@ -17,9 +16,10 @@ etiquetas = {
     "px_executables": "stages_name"
 }
 
-valores_unicos = {etiquetas[key]: set() for key in etiquetas}
+valores_unicos = {etiquetas[key]: set() for key in etiquetas}  # Conjuntos para almacenar valores únicos por archivo
 
 def buscar_etiqueta(data, etiqueta):
+    """Buscar una etiqueta específica en un JSON anidado."""
     if isinstance(data, dict):
         for key, value in data.items():
             if key == etiqueta:
@@ -31,6 +31,7 @@ def buscar_etiqueta(data, etiqueta):
             yield from buscar_etiqueta(item, etiqueta)
 
 def descomprimir_y_procesar_zip(zip_file_path, output_dir, etiqueta):
+    """Descomprimir un archivo ZIP y procesar los archivos OSH dentro de él."""
     try:
         with tempfile.TemporaryDirectory() as temp_dir:
             with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
@@ -40,61 +41,76 @@ def descomprimir_y_procesar_zip(zip_file_path, output_dir, etiqueta):
                         if file.endswith('.osh'):
                             file_path = os.path.join(root, file)
                             procesar_archivo_osh(file_path, output_dir, etiqueta)
-        st.success(f"Descompresión y procesamiento del archivo ZIP completados. Resultados guardados en '{output_dir}'.")
+        #st.success(f"Descompresión y procesamiento del archivo ZIP completados. Resultados guardados en '{output_dir}'.")
     except zipfile.BadZipFile:
-        st.error(f"Error: El archivo '{zip_file_path}' no es un archivo ZIP válido.")
+        #st.error
+        print(f"Error: El archivo '{zip_file_path}' no es un archivo ZIP válido.")
     except Exception as e:
-        st.error(f"Error inesperado: {e}")
+        #st.error
+        print(f"Error inesperado: {e}")
+
 
 def procesar_archivo_osh(osh_file_path, output_dir, etiqueta):
+    """Leer un archivo OSH y procesar líneas que contienen 'STAGE:'."""
     try:
+        #valores_unicos = {etiquetas[key]: set() for key in etiquetas}  # Conjuntos para almacenar valores únicos por archivo
         with open(osh_file_path, 'r', encoding='utf-8') as osh_file:
             for line in osh_file:
                 if "STAGE:" in line:
                     stage_value = line.split("STAGE:")[1].strip()
                     valores_unicos[etiquetas[etiqueta]].add(stage_value.split(".")[0].strip())
+                    #procesar_archivo_externo(stage_value, tipo, output_dir)
+
     except FileNotFoundError:
-        st.error(f"Error: El archivo OSH '{osh_file_path}' no se encontró.")
+        #st.error
+        print(f"Error: El archivo OSH '{osh_file_path}' no se encontró.")
     except Exception as e:
-        st.error(f"Error inesperado: {e}")
+        #st.error
+        print(f"Error inesperado: {e}")
+
 
 def procesar_archivo_json(file_path_json, file_json, etiqueta):
+    print("1")
     try:
-        with open(os.path.join(file_path_json, file_json), 'r', encoding='utf-8') as json_file:
+        with open(f"{file_path_json}\{file_json}", 'r', encoding='utf-8') as json_file:
+            print("2")
             data = json.load(json_file)
+
             if etiqueta == 'assets':
                 if etiqueta in data:
                     for item in data[etiqueta]:
                         if "name" in item and "type" in item:
                             name = item["name"]
                             type_value = item["type"]
+                        
                             if type_value in ["job", "orchestration_flow"]:
                                 valores_unicos[etiquetas[type_value]].add(name.split(".")[0].strip())
                             else:
                                 if type_value not in ("connection", "environment"):
                                     if type_value == "px_executables":
-                                        descomprimir_y_procesar_zip(os.path.join(file_path_json, f"{type_value}/{name}.zip"), name, type_value)
+                                        descomprimir_y_procesar_zip(f"{file_path_json}\{type_value}\{name}.zip", name, type_value)
                                     else:
                                         buscar_y_procesar_data(file_path_json, type_value, name)
                         else:
-                            st.warning(f"El objeto en '{etiqueta}' no contiene 'name' o 'type': {item}")
+                            print(f"El objeto en '{etiqueta}' no contiene 'name' o 'type': {item}")
             else:
                 for valor in buscar_etiqueta(data, etiqueta):
-                    sub_folder = file_json.split("\\", 1)
-                    valores_unicos[etiquetas[sub_folder[0]]].add(valor)
+                   sub_folder = file_json.split("\\", 1)
+                   valores_unicos[etiquetas[sub_folder[0]]].add(valor)
     except FileNotFoundError:
-        st.error(f"Error: El archivo JSON '{file_path_json}' no se encontró.")
+        print(f"Error: El archivo JSON '{file_path_json}' no se encontró.")
     except json.JSONDecodeError:
-        st.error(f"Error: El archivo '{file_path_json}' no es un JSON válido.")
+        print(f"Error: El archivo '{file_path_json}' no es un JSON válido.")
     except Exception as e:
-        st.error(f"Error inesperado: {e}")
+        print(f"Error inesperado: {e}")
 
 def buscar_y_procesar_data(folder_path, sub_folder, name):
-    file_path = os.path.join(f"{folder_path}/{sub_folder}", f"{name}.json")
+    file_path = os.path.join(f"{folder_path}\{sub_folder}", f"{name}.json")
+    
     if os.path.exists(file_path):
-        procesar_archivo_json(folder_path, f"{sub_folder}/{name}.json", etiquetas[sub_folder])
+        procesar_archivo_json(folder_path, f"{sub_folder}\{name}.json", etiquetas[sub_folder])
     else:
-        file_path = os.path.join(f"{folder_path}/{sub_folder}", f"{name}.zip")
+        file_path = os.path.join(f"{folder_path}{sub_folder}", f"{name}.zip")
 
 def guardar_en_archivo(valor, archivo, output_dir):
     try:
@@ -103,15 +119,15 @@ def guardar_en_archivo(valor, archivo, output_dir):
         with open(output_file_path, 'a', encoding='utf-8') as output_file:
             output_file.write(f"{valor}\n")
     except Exception as e:
-        st.error(f"Error al guardar en el archivo '{output_file_path}': {e}")
+        print(f"Error al guardar en el archivo '{output_file_path}': {e}")
 
 def main(ruta):
-    st.write("*************ENTRO**************")
+    print("*************ENTRO**************")
     file_path_json = ruta
     file_json = "DataStage-README.json"
-    etiqueta = 'assets'
-    ruta_salida = os.path.join(ruta, "Reporte_Insignias_CP4D.csv")
-    #ruta_salida = f"{ruta}\Reporte_Insignias_CP4D.csv"
+    etiqueta = 'assets'  
+    #ruta_salida = f"{ruta}\salida\Reporte_Insignias_CP4D.csv"
+    ruta_salida = f"{ruta}\Reporte_Insignias_CP4D.csv"
 
     jobs = []
     links = []
@@ -119,11 +135,17 @@ def main(ruta):
     stages = []
 
     procesar_archivo_json(file_path_json, file_json, etiqueta)
-
+    
     for archivo, valores in valores_unicos.items():
+        valor = valores_unicos[archivo]
+        tipo_valor = type(valor)
+        print(f"valor de archivo:{archivo}")
+        print(f"valor de valores:{valores}")
+        print(f"La clave '{archivo}' tiene un valor de tipo '{tipo_valor.__name__}'")
+
         for valor in valores:
             if archivo == 'job_name':
-                if re.match('SEQ_', valor) or re.match('Trial job', valor):
+                if re.match('SEQ_',valor) or re.match('Trial job',valor):
                     cumple_estandar = True
                     jobs.append((valor, cumple_estandar))
                 else:
@@ -150,13 +172,16 @@ def main(ruta):
     cantidad_rutas = len(rutas)
 
     cantidad_total = cantidad_jobs + cantidad_stages + cantidad_links + cantidad_rutas
+    print(f"la cantidad total es: {cantidad_total}")
     cantidad_true = cantidad_jobs_true + cantidad_stages_true + cantidad_links_true + cantidad_rutas_true
-
+    
     if cantidad_total == 0:
         cantidad_total = 1
-
+        
+    print(f"la cantidad de verdaderos es: {cantidad_true}")
     total = round((cantidad_true / cantidad_total) * 100, 2)
 
+    print(f"la ruta de salida es {ruta_salida}")
     with open(ruta_salida, "w") as archivo_salida:
         archivo_salida.write("Nombres Jobs:\n")
         for job in jobs:
@@ -174,5 +199,3 @@ def main(ruta):
         for ruta in rutas:
             archivo_salida.write(f"{ruta}\n")
         archivo_salida.write(f"\n{total}%\n")
-
-    st.success(f"El reporte se ha generado correctamente y se ha guardado en {ruta_salida}.")
