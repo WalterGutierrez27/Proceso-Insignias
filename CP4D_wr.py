@@ -175,19 +175,3 @@ def main(ruta):
         archivo_salida.write(f"\n{total}%\n")
 
     st.success(f"El reporte se ha generado correctamente y se ha guardado en {ruta_salida}.")
-
-# Interfaz de Streamlit
-st.title("Procesamiento de Insignias Estándares Desarrollo")
-
-# Cargar archivo
-uploaded_file = st.sidebar.file_uploader("Selecciona un archivo .zip", type="zip")
-
-if uploaded_file is not None:
-    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-        temp_file.write(uploaded_file.read())
-        temp_file_path = temp_file.name
-
-    st.sidebar.write("Archivo cargado y listo para procesar.")
-
-    if st.sidebar.button("Procesar archivo"):
-        main(temp_file_path)
