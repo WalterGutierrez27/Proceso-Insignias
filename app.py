@@ -267,7 +267,7 @@ else:
                     lines = file.readlines()
 
                 if len(lines) >= 2:
-                    penultima_linea = lines[-2].strip()
+                    penultima_linea = lines[-1].strip()
                     st.markdown(
                         f"""
                         <div style="background-color: #000000; color: white; padding: 10px; border-radius: 15px;">
