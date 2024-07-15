@@ -7,6 +7,7 @@ import nombre_links
 import nombre_rutas
 import nombre_stages
 import re
+import streamlit as st
 
 etiquetas = {
     "job": "job_name",
@@ -184,6 +185,7 @@ def main(ruta):
     total = round((cantidad_true / cantidad_total) * 100, 2)
 
     print(f"la ruta de salida es {ruta_salida}")
+    st.write(ruta_salida)
     with open(ruta_salida, "w") as archivo_salida:
         archivo_salida.write("Nombres Jobs:\n")
         for job in jobs:
