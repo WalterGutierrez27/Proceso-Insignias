@@ -151,7 +151,6 @@ if selected_project == 'CP4D':
                     #ruta_salida = os.path.join(ruta, "Reporte_Insignias_CP4D.csv")
                     #ruta_salida = os.path.join(ruta_base_descargas, "Downloads", f"Reporte_Insignias_{selected_project}.csv")
                     ruta_salida = ruta+"\\"+"Reporte_Insignias_CP4D.csv"
-                    st.write(ruta_salida)
                     
                     # Verificar si el archivo de salida existe antes de intentar abrirlo
                     if os.path.exists(ruta_salida):
