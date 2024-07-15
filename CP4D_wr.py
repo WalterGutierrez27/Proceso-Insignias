@@ -185,7 +185,7 @@ def main(ruta):
     total = round((cantidad_true / cantidad_total) * 100, 2)
 
     print(f"la ruta de salida es {ruta_salida}")
-    st.write("la ruta de salida es:" ruta_salida)
+    st.write(f"la ruta de salida es {ruta_salida}")
     with open(ruta_salida, "w") as archivo_salida:
         archivo_salida.write("Nombres Jobs:\n")
         for job in jobs:
