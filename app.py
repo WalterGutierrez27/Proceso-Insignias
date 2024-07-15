@@ -146,10 +146,10 @@ if selected_project == 'CP4D':
             )
             try:
                 cp4d.main(ruta)
-                ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
-                #subcarpeta = "salida"
-                #nombrearchivo = "Reporte_Insignias_CP4D.csv"
-                #ruta_salida = ruta+"\\"+subcarpeta+"\\"+nombrearchivo                
+                #ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
+                subcarpeta = "salida"
+                nombrearchivo = "Reporte_Insignias_CP4D.csv"
+                ruta_salida = ruta+"\\"+subcarpeta+"\\"+nombrearchivo                
                 #os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
     
                 #if os.path.exists(ruta_salida):
