@@ -202,3 +202,5 @@ def main(ruta):
         for ruta in rutas:
             archivo_salida.write(f"{ruta}\n")
         archivo_salida.write(f"\n{total}%\n")
+
+main("C:/Users/waltergutierrez/Downloads/CP4D")
