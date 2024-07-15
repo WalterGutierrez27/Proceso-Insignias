@@ -150,7 +150,7 @@ if selected_project == 'CP4D':
                 subcarpeta = "salida"
                 nombrearchivo = "Reporte_Insignias_CP4D.csv"
                 ruta_salida = ruta+"\\"+subcarpeta+"\\"+nombrearchivo                
-                os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
+                #os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
     
                 if os.path.exists(ruta_salida):
                     with open(ruta_salida, 'r', encoding='latin-1') as file:
