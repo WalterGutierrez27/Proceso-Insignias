@@ -3,8 +3,8 @@ import os
 from main import Procesador
 import CP4D_wr as cp4d
 
-# Definir la ruta base como un parámetro
-ruta_base = "C:/Users/waltergutierrez/"
+# Definir la ruta base de descargas
+ruta_base_descargas = os.path.join(os.path.expanduser("~"), "Downloads")
 
 # Establecer el color de fondo para la parte central y barras negras a los lados
 st.markdown(
@@ -70,14 +70,14 @@ st.markdown(estilo_imagen, unsafe_allow_html=True)
 col1, col2 = st.columns([1, 2])
 
 # Imagen
-col1.image(os.path.join(ruta_base, "OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Imagenes/LogoSetiAio.jpg"), caption='', width=100, use_column_width=True)
+col1.image(os.path.join("LogoSetiAio.jpg"), caption='', width=100, use_column_width=True)
 
 # Título
 col2.markdown("<h1 class='titulo'>Proceso Insignias Estandares Desarrollo </h1>", unsafe_allow_html=True)
 
 # Barra lateral (sidebar)
 # Cargar la imagen en el sidebar y alinearla a la derecha
-st.sidebar.image("C:/Users/waltergutierrez/Downloads/estandarizacion-main/estandarizacion-main/descargar.jfif", caption='Insignias', width=100, use_column_width=True)
+st.sidebar.image(os.path.join("descargar.jfif"), caption='Insignias', width=100, use_column_width=True)
 
 # Opciones de proyectos y selección en el sidebar
 st.sidebar.markdown("</div>", unsafe_allow_html=True)
@@ -135,6 +135,7 @@ if selected_project == 'CP4D':
 
     if st.button("Procesar archivo"):
         if ruta:
+            ruta = ruta.strip()  # Eliminar espacios en blanco
             if os.path.exists(ruta) and os.path.isdir(ruta):
                 st.markdown(
                     """
@@ -147,15 +148,18 @@ if selected_project == 'CP4D':
                 )
                 try:
                     cp4d.main(ruta)
-                    ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
+                    #ruta_salida = os.path.join(ruta, "Reporte_Insignias_CP4D.csv")
+                    subcarpeta = "salida"
+                    nombrearchivo = "Reporte_Insignias_CP4D.csv"
+                    ruta_salida = ruta+"\\"+subcarpeta+"\\"+nombrearchivo
+                    #ruta_salida = os.path.join(ruta, f"Reporte_Insignias_{selected_project}.csv")
+                    
+                    #os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
 
-                    # Verificar si el archivo de salida existe antes de intentar abrirlo
-                    if os.path.exists(ruta_salida):
-                        # Leer el contenido del archivo de salida
-                        with open(ruta_salida, 'r', encoding='latin-1') as file:
-                            lines = file.readlines()
+                    #if  os.path.exists(ruta_salida):
+                    with open(ruta_salida, 'r', encoding='latin-1') as file:
+                        lines = file.readlines()                            
 
-                        # Mostrar la penúltima línea del archivo
                         if len(lines) >= 2:
                             penultima_linea = lines[-1].strip()
                             st.markdown(
@@ -173,7 +177,6 @@ if selected_project == 'CP4D':
                         with open(ruta_salida, 'rb') as file:
                             file_data = file.read()
 
-                        # Botón para descargar el archivo de salida
                         st.download_button(
                             label="Descargar reporte",
                             data=file_data,
@@ -185,14 +188,13 @@ if selected_project == 'CP4D':
 
                 except PermissionError:
                     st.error("Permiso denegado para acceder a esta ruta.")
-                except Exception as e:
-                    st.error(f"Error al listar la ruta: {e}")
+                #except Exception as e:
+                 #   st.error(f"Error al listar la ruta: {e}")
             else:
                 st.error("La ruta introducida no existe o no es un directorio.")
         else:
             st.warning("Por favor, introduce una ruta.")
 else:
-    # Cambiar el contenido del panel de carga de archivos con JavaScript y CSS
     custom_css = """
     <style>
         .stFileUploader label div:first-child {
@@ -210,11 +212,9 @@ else:
     """
     st.markdown(custom_css, unsafe_allow_html=True)
 
-    # Cargar archivo .dsx
     with st.sidebar:
         uploaded_file = st.file_uploader("Selecciona un archivo .dsx para procesar", type="dsx")
 
-    # Estilo personalizado para botones
     st.markdown(
         """
         <style>
@@ -250,12 +250,13 @@ else:
         unsafe_allow_html=True
     )
 
-    # Botón para procesar el archivo
     if st.button("Procesar archivo"):
         if uploaded_file is not None:
             try:
                 contenido_archivo = [line.decode('latin-1').strip() for line in uploaded_file]
-                ruta_salida = os.path.join(ruta_base, "Downloads", f"Reporte_Insignias_{selected_project}.csv")
+                ruta_salida = os.path.join(ruta_base_descargas, f"Reporte_Insignias_{selected_project}.csv")
+                os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
+                
                 procesador.main(contenido_archivo, selected_project, ruta_salida)
                 st.markdown(
                     """
@@ -267,11 +268,9 @@ else:
                     unsafe_allow_html=True
                 )
 
-                # Leer el contenido del archivo de salida
                 with open(ruta_salida, 'r', encoding='latin-1') as file:
                     lines = file.readlines()
 
-                # Mostrar el resultado en la parte gráfica
                 if len(lines) >= 2:
                     penultima_linea = lines[-1].strip()
                     st.markdown(
@@ -289,7 +288,6 @@ else:
                 with open(ruta_salida, 'rb') as file:
                     file_data = file.read()
 
-                # Botón para descargar el archivo de salida
                 st.download_button(
                     label="Descargar reporte",
                     data=file_data,
