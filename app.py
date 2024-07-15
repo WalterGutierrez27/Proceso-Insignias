@@ -148,20 +148,15 @@ if selected_project == 'CP4D':
                 )
                 try:
                     cp4d.main(ruta)
-                    #ruta_salida = os.path.join(ruta, "Reporte_Insignias_CP4D.csv")
-                    subcarpeta = "salida"
-                    nombrearchivo = "Reporte_Insignias_CP4D.csv"
-                    ruta_salida = ruta+"\\"+subcarpeta+"\\"+nombrearchivo
-                    #ruta_salida = os.path.join(ruta, f"Reporte_Insignias_{selected_project}.csv")
-                    
-                    #os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
+                    ruta_salida = os.path.join(ruta, "salida", "Reporte_Insignias_CP4D.csv")
+                    os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
 
-                    #if  os.path.exists(ruta_salida):
-                    with open(ruta_salida, 'r', encoding='latin-1') as file:
-                        lines = file.readlines()                            
+                    if os.path.exists(ruta_salida):
+                        with open(ruta_salida, 'r', encoding='latin-1') as file:
+                            lines = file.readlines()
 
                         if len(lines) >= 2:
-                            penultima_linea = lines[-1].strip()
+                            penultima_linea = lines[-2].strip()
                             st.markdown(
                                 f"""
                                 <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
@@ -188,8 +183,8 @@ if selected_project == 'CP4D':
 
                 except PermissionError:
                     st.error("Permiso denegado para acceder a esta ruta.")
-                #except Exception as e:
-                 #   st.error(f"Error al listar la ruta: {e}")
+                except Exception as e:
+                    st.error(f"Error al listar la ruta: {e}")
             else:
                 st.error("La ruta introducida no existe o no es un directorio.")
         else:
@@ -272,7 +267,7 @@ else:
                     lines = file.readlines()
 
                 if len(lines) >= 2:
-                    penultima_linea = lines[-1].strip()
+                    penultima_linea = lines[-2].strip()
                     st.markdown(
                         f"""
                         <div style="background-color: #000000; color: white; padding: 10px; border-radius: 15px;">
