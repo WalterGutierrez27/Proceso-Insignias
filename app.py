@@ -184,8 +184,8 @@ if selected_project == 'CP4D':
     
             except PermissionError:
                 st.error("Permiso denegado para acceder a esta ruta.")
-            except Exception as e:
-                    st.error(f"Error al listar la ruta: {e}")
+            #except Exception as e:
+             #       st.error(f"Error al listar la ruta: {e}")
         else:
             st.warning("Por favor, introduce una ruta.")
 else:
