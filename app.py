@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-import zipfile
 from main import Procesador
 import CP4D_wr as cp4d
 
@@ -94,7 +93,6 @@ with st.sidebar:
 if selected_project == 'CP4D':
     with st.sidebar:
         ruta = st.text_input("Introduce la ruta del folder a procesar")
-        uploaded_zip = st.file_uploader("Sube un archivo .zip", type="zip")
     
     # Estilo personalizado para botones
     st.markdown(
@@ -136,7 +134,7 @@ if selected_project == 'CP4D':
     )
 
     if st.button("Procesar archivo"):
-        if ruta and uploaded_zip:
+        if ruta:
             st.markdown(
                 """
                 <div style="background-color: #000000; color: white; padding: 10px; border-radius: 5px;">
@@ -147,23 +145,17 @@ if selected_project == 'CP4D':
                unsafe_allow_html=True
             )
             try:
-                # Guardar el archivo .zip subido
-                with tempfile.NamedTemporaryFile(delete=False) as tmp_zip:
-                    tmp_zip.write(uploaded_zip.read())
-                    tmp_zip_path = tmp_zip.name
-                
-                # Extraer el archivo .zip
-                with zipfile.ZipFile(tmp_zip_path, 'r') as zip_ref:
-                    zip_ref.extractall(ruta)
-                
                 cp4d.main(ruta)
+                #ruta_salida = os.path.join(ruta, "Reporte_Insignias_CP4D.csv")
                 subcarpeta = "salida"
                 nombrearchivo = "Reporte_Insignias_CP4D.csv"
-                ruta_salida = os.path.join(ruta, subcarpeta, nombrearchivo)
-
+                ruta_salida = ruta+"\\"+subcarpeta+"\\"+nombrearchivo                
+                #os.makedirs(os.path.dirname(ruta_salida), exist_ok=True)
+    
+                #if os.path.exists(ruta_salida):
                 with open(ruta_salida, 'r', encoding='latin-1') as file:
-                    lines = file.readlines()
-
+                    lines = file.readlines()                    
+    
                 if len(lines) >= 2:
                     penultima_linea = lines[-1].strip()
                     st.markdown(
@@ -177,23 +169,26 @@ if selected_project == 'CP4D':
                     )
                 else:
                     st.warning("El archivo no tiene suficientes líneas para mostrar la penúltima línea.")
-
+    
                 with open(ruta_salida, 'rb') as file:
                     file_data = file.read()
-
+                    st.write(ruta_salida)
+                    
                 st.download_button(
                     label="Descargar reporte",
                     data=file_data,
                     file_name="Reporte_Insignias_CP4D.csv",
                     mime="text/csv"
                 )
-
+                #else:
+                #    st.error(f"No se encontró el archivo en la ruta especificada: {ruta_salida}")
+    
             except PermissionError:
                 st.error("Permiso denegado para acceder a esta ruta.")
-            except Exception as e:
-                st.error(f"Error al procesar el archivo: {e}")
+            #except Exception as e:
+             #       st.error(f"Error al listar la ruta: {e}")
         else:
-            st.warning("Por favor, introduce una ruta y sube un archivo .zip.")
+            st.warning("Por favor, introduce una ruta.")
 else:
     custom_css = """
     <style>
