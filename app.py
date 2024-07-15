@@ -92,13 +92,7 @@ with st.sidebar:
 
 if selected_project == 'CP4D':
     with st.sidebar:
-        #ruta = st.text_input("Introduce la ruta del folder a procesar")
-        # Cargar archivo
-        uploaded_file = st.sidebar.file_uploader("Selecciona un archivo .zip", type="zip")
-        if uploaded_file is not None:
-        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-            temp_file.write(uploaded_file.read())
-            temp_file_path = temp_file.name    
+        ruta = st.text_input("Introduce la ruta del folder a procesar")
     
     # Estilo personalizado para botones
     st.markdown(
