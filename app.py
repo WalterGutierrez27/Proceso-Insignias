@@ -153,7 +153,6 @@ if selected_project == 'CP4D':
                 if os.path.exists(ruta_salida):
                     with open(ruta_salida, 'r', encoding='latin-1') as file:
                         lines = file.readlines()
-                        st.write(ruta_salida)
     
                     if len(lines) >= 2:
                         penultima_linea = lines[-1].strip()
@@ -171,6 +170,7 @@ if selected_project == 'CP4D':
     
                     with open(ruta_salida, 'rb') as file:
                         file_data = file.read()
+                        st.write(ruta_salida)
                     
                     st.download_button(
                         label="Descargar reporte",
