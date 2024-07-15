@@ -149,7 +149,7 @@ if selected_project == 'CP4D':
                     #cp4d.main(ruta)
                     cp4d.main("C:/Users/waltergutierrez/Downloads/CP4D")
                     #ruta_salida = os.path.join(ruta, "Reporte_Insignias_CP4D.csv")
-                    ruta_salida = ruta+"\\"+"Reporte_Insignias_CP4D.csv"
+                    ruta_salida = ruta+"/"+"Reporte_Insignias_CP4D.csv"
                     
                     # Verificar si el archivo de salida existe antes de intentar abrirlo
                     if os.path.exists(ruta_salida):
