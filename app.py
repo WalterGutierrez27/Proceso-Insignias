@@ -70,14 +70,14 @@ st.markdown(estilo_imagen, unsafe_allow_html=True)
 col1, col2 = st.columns([1, 2])
 
 # Imagen
-col1.image(os.path.join("LogoSetiAio.jpg"), caption='', width=100, use_column_width=True)
+col1.image("LogoSetiAio.jpg", caption='', width=100)
 
 # Título
 col2.markdown("<h1 class='titulo'>Proceso Insignias Estandares Desarrollo </h1>", unsafe_allow_html=True)
 
 # Barra lateral (sidebar)
 # Cargar la imagen en el sidebar y alinearla a la derecha
-st.sidebar.image(os.path.join("descargar.jfif"), caption='Insignias', width=100, use_column_width=True)
+st.sidebar.image("descargar.jfif", caption='Insignias', width=100)
 
 # Opciones de proyectos y selección en el sidebar
 st.sidebar.markdown("</div>", unsafe_allow_html=True)
@@ -278,7 +278,7 @@ else:
                         unsafe_allow_html=True
                     )
                 else:
-                    st.warning("El archivo no tiene resultados por mostrar")
+                    st.warning("El archivo no tiene suficientes líneas para mostrar la penúltima línea.")
 
                 with open(ruta_salida, 'rb') as file:
                     file_data = file.read()
