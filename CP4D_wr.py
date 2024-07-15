@@ -129,7 +129,7 @@ def main(ruta):
     #ruta_salida = f"{ruta}\salida\Reporte_Insignias_CP4D.csv"
     #ruta_salida = f"{ruta}\Reporte_Insignias_CP4D.csv"
     #ruta_salida = os.path.normpath(ruta, "Reporte_Insignias_CP4D.csv") 
-    ruta_salida = os.path.normpath(os.path.join(ruta, nombre_archivo))
+    ruta_salida = os.path.normpath(os.path.join(ruta, "Reporte_Insignias_CP4D.csv"))
 
     jobs = []
     links = []
