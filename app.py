@@ -172,7 +172,7 @@ if selected_project == 'CP4D':
     
                     with open(ruta_salida, 'rb') as file:
                         file_data = file.read()
-                        st.write("Paso")
+                        st.write(ruta_salida)
                         
                     st.download_button(
                         label="Descargar reporte",
